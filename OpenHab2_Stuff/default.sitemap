@@ -1,0 +1,67 @@
+sitemap default label="Overview" {
+	Frame label="Charts" {
+        Switch item=CHART_PERIOD label="Zeitspanne" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+		Chart item=gHumidities period=h refresh=300 visibility=[CHART_PERIOD==0]
+        Chart item=gHumidities period=d refresh=1800 visibility=[CHART_PERIOD==1, CHART_PERIOD=="Uninitialized"]
+        Chart item=gHumidities period=W refresh=3600 visibility=[CHART_PERIOD==2]
+        Chart item=gTemperatures period=h refresh=300 visibility=[CHART_PERIOD==0]
+        Chart item=gTemperatures period=d refresh=1800 visibility=[CHART_PERIOD==1, CHART_PERIOD=="Uninitialized"]
+        Chart item=gTemperatures period=W refresh=3600 visibility=[CHART_PERIOD==2]
+	}
+	Frame label="Gruppen" {
+		Group item=All label="All Groups"        
+	}
+    
+    Frame label="Wetter" {
+		Text item=Condition {
+			Frame label="Atmosphere" {
+				Text item=Humidity        
+				Text item=Visibility      
+				Text item=Pressure        
+				Text item=Pressure_Trend  
+				Text item=Ozone           
+				Text item=UV_Index        
+			}
+			Frame label="Clouds" {
+				Text item=Clouds
+			}
+			Frame label="condition" {
+				Text item=Condition
+				Text item=Condition_ID
+				Text item=ObservationTime
+				Text item=LastUpdate
+				Text item=CommonId
+			}
+			Frame label="precipitation" {
+				Text item=Rain
+				Text item=Snow
+				Text item=Precip_Probability
+			}
+			Frame label="temperature" {
+				Text item=Temperature
+				Text item=Temp_Feel
+				Text item=Temp_Dewpoint
+			}
+			Frame label="wind" {
+				Text item=Wind_Speed
+				Text item=Wind_Direction
+				Text item=Wind_Degree
+				Text item=Wind_Gust
+				Text item=Wind_Chill
+			}
+ 
+			Frame label="forecast 1 day" {
+				Text item=Temp_MinMax_1
+				Text item=Temp_MinMax_2
+				Text item=Temp_MinMax_3
+				Text item=Temp_MinMax_4
+				Text item=Temp_MinMax_5
+				Text item=Temp_Min_1
+				Text item=Temp_Max_1
+				Text item=Temp_MinMax_1
+			}
+ 
+		}
+	}
+}
+

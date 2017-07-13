@@ -1,0 +1,113 @@
+Group All
+Group gOG2 (All)
+Group gOG1 (All)
+Group gEG (All)
+Group gUG1 (All)
+Group gBad (gOG1)
+Group gSleepingRoom (gOG1)
+Group gLivingRoom (gEG)
+Group gBasement (gUG1)
+Group gStudio (gOG2)
+Group gSensor (All)
+Group gWeatherStation (All)
+Group gTemperatures (gSensor)
+Group gHumidities (gSensor)
+Group gPressures (gSensor)
+Group gAltitudes (gSensor)
+Group gDewpoints (gSensor)
+Group gWind (gSensor)
+
+Number CHART_PERIOD
+
+Number MQTT_Sensor_Temp_Bad "Temperature Bad [%.2f °C]" <temperature> (gTemperatures,gBad) {mqtt="<[ds214mosquitto:Home/OG1/Bad/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_Bad "Humidity Bad [%.0f %%]" <humidity> (gHumidities,gBad) {mqtt="<[ds214mosquitto:Home/OG1/Bad/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_Bad "Pressure Bad [%.0f hPa]" <pressure> (gPressures,gBad) {mqtt="<[ds214mosquitto:Home/OG1/Bad/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_Bad "Altitude Bad [%.0f m ü.NN]" <Altitude> (gAltitudes,gBad) {mqtt="<[ds214mosquitto:Home/OG1/Bad/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_Bad "Dewpoint Bad [%.0f °C]" <Dewpoint> (gDewpoints,gBad) {mqtt="<[ds214mosquitto:Home/OG1/Bad/Dewpoint:state:default]"}
+
+
+Number MQTT_Sensor_Temp_Basement "Temperature Basement [%.2f °C]" <temperature> (gTemperatures,gBasement) {mqtt="<[ds214mosquitto:Home/UG1/Basement/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_Basement "Humidity Basement [%.0f %%]" <humidity> (gHumidities,gBasement) {mqtt="<[ds214mosquitto:Home/UG1/Basement/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_Basement "Pressure Basement [%.0f hPa]" <pressure> (gPressures,gBasement) {mqtt="<[ds214mosquitto:Home/UG1/Basement/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_Basement "Altitude Basement [%.0f m ü.NN]" <altitude> (gAltitudes,gBasement) {mqtt="<[ds214mosquitto:Home/UG1/Basement/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_Basement "Dewpoint Basement [%.0f °C]" <dewpoint> (gDewpoints,gBasement) {mqtt="<[ds214mosquitto:Home/UG1/Basement/Dewpoint:state:default]"}
+
+Number MQTT_Sensor_Temp_SleepingRoom "Temperature SleepingRoom [%.2f °C]" <temperature> (gTemperatures,gSleepingRoom) {mqtt="<[ds214mosquitto:Home/OG1/SleepingRoom/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_SleepingRoom "Humidity SleepingRoom [%.0f %%]" <humidity> (gHumidities,gSleepingRoom) {mqtt="<[ds214mosquitto:Home/OG1/SleepingRoom/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_SleepingRoom "Pressure SleepingRoom [%.0f hPa]" <pressure> (gPressures,gSleepingRoom) {mqtt="<[ds214mosquitto:Home/OG1/SleepingRoom/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_SleepingRoom "Altitude SleepingRoom [%.0f m ü.NN]" <altitude> (gAltitudes,gSleepingRoom) {mqtt="<[ds214mosquitto:Home/OG1/SleepingRoom/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_SleepingRoom "Dewpoint SleepingRoom [%.0f °C]" <dewpoint> (gDewpoints,gSleepingRoom) {mqtt="<[ds214mosquitto:Home/OG1/SleepingRoom/Dewpoint:state:default]"}
+
+Number MQTT_Sensor_Temp_LivingRoom "Temperature LivingRoom [%.2f °C]" <temperature> (gTemperatures,gLivingRoom) {mqtt="<[ds214mosquitto:Home/EG/LivingRoom/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_LivingRoom "Humidity LivingRoom [%.0f %%]" <humidity> (gHumidities,gLivingRoom) {mqtt="<[ds214mosquitto:Home/EG/LivingRoom/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_LivingRoom "Pressure LivingRoom [%.0f hPa]" <pressure> (gPressures,gLivingRoom) {mqtt="<[ds214mosquitto:Home/EG/LivingRoom/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_LivingRoom "Altitude LivingRoom [%.0f m ü.NN]" <altitude> (gAltitudes,gLivingRoom) {mqtt="<[ds214mosquitto:Home/EG/LivingRoom/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_LivingRoom "Dewpoint LivingRoom [%.0f °C]" <dewpoint> (gDewpoints,gLivingRoom) {mqtt="<[ds214mosquitto:Home/EG/LivingRoom/Dewpoint:state:default]"}
+
+Number MQTT_Sensor_Temp_Studio "Temperature Studio [%.2f °C]" <temperature> (gTemperatures,gStudio) {mqtt="<[ds214mosquitto:Home/OG2/Studio/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_Studio "Humidity Studio [%.0f %%]" <humidity> (gHumidities,gStudio) {mqtt="<[ds214mosquitto:Home/OG2/Studio/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_Studio "Pressure Studio [%.0f hPa]" <pressure> (gPressures,gStudio) {mqtt="<[ds214mosquitto:Home/OG2/Studio/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_Studio "Altitude Studio [%.0f m ü.NN]" <altitude> (gAltitudes,gStudio) {mqtt="<[ds214mosquitto:Home/OG2/Studio/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_Studio "Dewpoint Studio [%.0f °C]" <dewpoint> (gDewpoints,gStudio) {mqtt="<[ds214mosquitto:Home/OG2/Studio/Dewpoint:state:default]"}
+
+
+// atmosphere
+Number   Humidity         "Humidity [%d %%]"  <humidity> (gWeatherStation)  {weather="locationId=wPoppenweiler, type=atmosphere, property=humidity"}
+Number   Visibility       "Visibility [%.2f km]" (gWeatherStation) {weather="locationId=wPoppenweiler, type=atmosphere, property=visibility"}
+Number   Pressure         "Pressure [%.2f mb]"  <pressure> (gWeatherStation) {weather="locationId=wPoppenweiler, type=atmosphere, property=pressure"}
+String   Pressure_Trend   "Pressuretrend [%s]"  (gWeatherStation)  {weather="locationId=wPoppenweiler, type=atmosphere, property=pressureTrend"}
+Number   Ozone            "Ozone [%d ppm]"      (gWeatherStation)  {weather="locationId=wPoppenweiler, type=atmosphere, property=ozone"}
+Number   UV_Index         "UV Index"            (gWeatherStation)  {weather="locationId=wPoppenweiler, type=atmosphere, property=uvIndex, scale=0"}
+ 
+// clouds
+Number   Clouds   "Clouds [%.0f %%]" (gWeatherStation)  {weather="locationId=wPoppenweiler, type=clouds, property=percent"}
+ 
+// condition
+String   Condition        "Condition [%s]"     (gWeatherStation) {weather="locationId=wPoppenweiler, type=condition, property=text"}
+String   Condition_ID     "Condition id [%s]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=condition, property=id"}
+DateTime ObservationTime  "Observation time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=condition, property=observationTime"}
+DateTime LastUpdate       "Last update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"       (gWeatherStation) {weather="locationId=wPoppenweiler, type=condition, property=lastUpdate"}
+String   CommonId         "Common id [%s]"   (gWeatherStation)   {weather="locationId=wPoppenweiler, type=condition, property=commonId"}
+ 
+// precipitation
+Number   Rain          "Rain [%.2f mm/h]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=precipitation, property=rain"}
+Number   Snow          "Snow [%.2f mm/h]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=precipitation, property=snow"}
+Number   Precip_Probability   "Precip probability [%d %%]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=precipitation, property=probability"}
+// new total property in 1.8, only Wunderground
+Number   Precip_Total         "Precip total [%d mm]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=precipitation, property=total"}
+Number   Precip_Total_Inches  "Precip total [%d in]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=precipitation, property=total, unit=inches"}
+ 
+// temperature
+Number   Temperature      "Temperature [%.2f °C]"      (gWeatherStation) {weather="locationId=wPoppenweiler, type=temperature, property=current"}
+Number   Temp_Feel        "Temperature feel [%.2f °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, type=temperature, property=feel"}
+Number   Temp_Dewpoint    "Dewpoint [%.2f °C]"         (gWeatherStation) {weather="locationId=wPoppenweiler, type=temperature, property=dewpoint"}
+ 
+// Forecasts
+Number   Temp_Min_1         "Temperature min [%.2f °C]"  (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=1, type=temperature, property=min"}
+Number   Temp_Max_1         "Temperature max [%.2f °C]"  (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=1, type=temperature, property=max"}
+String   Temp_MinMax_1      "Forecast 1 Min/Max [%s °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=1, type=temperature, property=minMax"}
+String   Temp_MinMax_2      "Forecast 2 Min/Max [%s °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=2, type=temperature, property=minMax"}
+String   Temp_MinMax_3      "Forecast 3 Min/Max [%s °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=3, type=temperature, property=minMax"}
+String   Temp_MinMax_4      "Forecast 4 Min/Max [%s °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=4, type=temperature, property=minMax"}
+String   Temp_MinMax_5      "Forecast 5 Min/Max [%s °C]" (gWeatherStation) {weather="locationId=wPoppenweiler, forecast=5, type=temperature, property=minMax"}
+ 
+// Wind
+Number   Wind_Speed           "Windspeed [%.2f km/h]"   (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=speed"}
+Number   Wind_Speed_Beaufort  "Windspeed Beaufort [%d]" (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=speed, unit=beaufort"}
+//Number   Wind_Speed_Knots     "Windspeed [%.2f kn]"   (gWeatherStation)   {weather="locationId=wPoppenweiler, type=wind, property=speed, unit=knots"}
+Number   Wind_Speed_Mps       "Windspeed [%.2f mps]"    (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=speed, unit=mps"}
+//Number   Wind_Speed_Mph       "Windspeed [%.2f mph]"  (gWeatherStation)   {weather="locationId=wPoppenweiler, type=wind, property=speed, unit=mph"}
+String   Wind_Direction       "Wind direction [%s]"     (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=direction"}
+Number   Wind_Degree          "Wind degree [%.0f °]"    (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=degree"}
+Number   Wind_Gust            "Wind gust [%.2f km/h]"   (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=gust"}
+Number   Wind_Gust_Beaufort   "Wind gust Beaufort [%d]" (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=gust, unit=beaufort"}
+//Number   Wind_Gust_Knots      "Wind gust [%.2f kn]"   (gWeatherStation)   {weather="locationId=wPoppenweiler, type=wind, property=gust, unit=knots"}
+Number   Wind_Gust_Mps        "Wind gust [%.2f mps]"    (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=gust, unit=mps"}
+//Number   Wind_Gust_Mph        "Wind gust [%.2f mph]"  (gWeatherStation)   {weather="locationId=wPoppenweiler, type=wind, property=gust, unit=mph"}
+Number   Wind_Chill           "Wind chill [%.2f °C]"    (gWeatherStation) {weather="locationId=wPoppenweiler, type=wind, property=chill"}
+ 
+// weather station (only Wunderground and Hamweather), needs version 1.7 or greater of the binding
+String   Station_Name         "Station Name [%s]"        (gWeatherStation) {weather="locationId=wPoppenweiler, type=station, property=name"}
+String   Station_Id           "Station Id [%s]"          (gWeatherStation) {weather="locationId=wPoppenweiler, type=station, property=id"}
+Number   Station_Latitude     "Station Latitude [%.6f]"  (gWeatherStation) {weather="locationId=wPoppenweiler, type=station, property=latitude, scale=6"}
+Number   Station_Longitude    "Station Longitude [%.6f]" (gWeatherStation) {weather="locationId=wPoppenweiler, type=station, property=longitude, scale=6"}
