@@ -15,7 +15,6 @@ Group gHumidities (gSensor)
 Group gPressures (gSensor)
 Group gAltitudes (gSensor)
 Group gDewpoints (gSensor)
-Group gWind (gSensor)
 
 Number CHART_PERIOD
 
