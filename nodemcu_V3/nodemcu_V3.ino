@@ -9,8 +9,8 @@
 #define wifi_ssid "BTWLAN"
 #define wifi_password "X3nopusLaevis"
 
-#define room "Basement"
-#define location "UG1/"room
+#define room "Bad"
+#define location "OG1/"room
 #define mqtt_server "192.168.1.8"
 
 #define mqtt_user "nodemcu_"room
