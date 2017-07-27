@@ -16,17 +16,17 @@ rule "Send Mail if sensor has not been updated for 10 min"
 when
     Item gSensor received update
 then	
-	gSensor.allMembers.forEach[item |
+	gSensor.allMembers.forEach[item |		
 		//if ((now.millis - item.lastUpdate.millis) > TWENTY_MINUTES_IN_MILLIS){
 		if (!item.changedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {				
-			if(!sensorUpdateMap.containsKey(item.toString()) || !sensorUpdateMap.get(item.toString()).equals(MAIL_HAS_BEEN_SENT)){
-				sensorUpdateMap.put(item.toString(), MAIL_HAS_BEEN_SENT)
+			if(!sensorUpdateMap.containsKey(item.name) || !sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
+				sensorUpdateMap.put(item.name, MAIL_HAS_BEEN_SENT)
 				val String failedUpdateString = "sensor " + item.toString + " did not update its value in the last " + String.valueOf(MINUTES_TO_CHECK_FOR_ACTIVITY) +  "minutes\nLast Update with values: " + item.previousState(true).timestamp.toString()		
 				sendMail(RECIPIENT, "Sensor failed to update!", failedUpdateString.toString)
 			}
 		} else {
-			if(sensorUpdateMap.containsKey(item.toString()) && sensorUpdateMap.get(item.toString()).equals(MAIL_HAS_BEEN_SENT)){
-				sensorUpdateMap.remove(item.toString())
+			if(sensorUpdateMap.containsKey(item.name) && sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
+				sensorUpdateMap.remove(item.name)
 				val returnedSensorString = "sensor " + item.toString + " is online again!\nLast Update with values: " + item.previousState(true).timestamp.toString()
 				sendMail(RECIPIENT, "Sensor returned!", returnedSensorString.toString)					
 			}
