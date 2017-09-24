@@ -8,9 +8,10 @@
 
 #define wifi_ssid "BTWLAN"
 #define wifi_password "X3nopusLaevis"
+#define SERIAL_BAUD 115200
 
-#define room "Bad"
-#define location "OG1/"room
+#define room "Studio"
+#define location "OG2/"room
 #define mqtt_server "192.168.1.8"
 
 #define mqtt_user "nodemcu_"room
@@ -30,15 +31,13 @@ PubSubClient client(espClient);
 BME280I2C bme;                   // Default : forced mode, standby time = 1000 ms
 // Oversampling = pressure ×1, temperature ×1, humidity ×1, filter off,
 bool metric = true;
+bool serial_output = false;
 long lastMsg = 0;
 int avgOverXMeasurements = 10;
 
 float newTemp(NAN), newHum(NAN), newPres(NAN);
 float newAltitude = 0.0;
-float newDewPoint = 0.0;;
-/* ==== Defines ==== */
-#define SERIAL_BAUD 115200
-/* ==== END Defines ==== */
+float newDewPoint = 0.0;
 
 const int sleepSeconds = 5 * 60;
 
@@ -50,10 +49,14 @@ void printBME280CalculatedData(Stream* client);
 /* ==== END Prototypes ==== */
 
 void setup() {
-  Serial.begin(SERIAL_BAUD);
-  while (!Serial) {} // Wait
+  if (serial_output) {
+    Serial.begin(SERIAL_BAUD);  
+    while (!Serial) {} // Wait
+  }
   while (!bme.begin()) {
-    Serial.println("Could not find BME280 sensor!");
+    if (serial_output) {
+      Serial.println("Could not find BME280 sensor!");
+    }
     delay(1000);
   }
 
@@ -72,10 +75,10 @@ void loop() {
   //  if (now - lastMsg > 10000) {
   //    lastMsg = now;
 
-  printBME280Data(&Serial, avgOverXMeasurements);
-  printBME280CalculatedData(&Serial);
-
-
+  
+  printBME280Data(&Serial, avgOverXMeasurements, serial_output);
+  printBME280CalculatedData(&Serial, serial_output);
+  
   client.publish(temperature_topic, String(newTemp).c_str(), true);
   client.publish(humidity_topic, String(newHum).c_str(), true);
   client.publish(pressure_topic, String(newPres).c_str(), true);
@@ -93,34 +96,45 @@ void loop() {
 void setup_wifi() {
   delay(10);
   // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(wifi_ssid);
-
+  if (serial_output) {
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(wifi_ssid);
+  }
   WiFi.begin(wifi_ssid, wifi_password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    if (serial_output) {
+      Serial.print(".");
+    }
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  if (serial_output) {
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+  }
 }
 
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    if (serial_output) {
+      Serial.print("Attempting MQTT connection...");
+    }
     if (client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
-      Serial.println("connected");
+      if (serial_output) {
+        Serial.println("connected");
+      }
     } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
+      if (serial_output) {
+        Serial.print("failed, rc=");
+        Serial.print(client.state());
+        Serial.println(" try again in 5 seconds");
+        // Wait 5 seconds before retrying
+      }
       delay(5000);
     }
   }
@@ -131,7 +145,7 @@ void reconnect() {
 //         (newValue < prevValue - maxDiff || newValue > prevValue + maxDiff);
 //}
 
-void printBME280Data(Stream* client, int avgOverXMeasurements) {
+void printBME280Data(Stream* client, int avgOverXMeasurements, bool serial_output) {
   uint8_t pressureUnit(0);                                           // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
 
   newPres = 0;
@@ -158,26 +172,29 @@ void printBME280Data(Stream* client, int avgOverXMeasurements) {
     pressure calculations. So it is more effcient to read
     temperature, humidity and pressure all together.
   */
-
-  client->print("Temp: ");
-  client->print(newTemp);
-  client->print("°" + String(metric ? 'C' : 'F'));
-  client->print("\t\tHumidity: ");
-  client->print(newHum);
-  client->print("% RH");
-  client->print("\t\tPressure: ");
-  client->print(newPres);
-  client->print(" hPa");
+  if (serial_output) {
+    client->print("Temp: ");
+    client->print(newTemp);
+    client->print("°" + String(metric ? 'C' : 'F'));
+    client->print("\t\tHumidity: ");
+    client->print(newHum);
+    client->print("% RH");
+    client->print("\t\tPressure: ");
+    client->print(newPres);
+    client->print(" hPa");
+  }
 }
-void printBME280CalculatedData(Stream* client) {
+void printBME280CalculatedData(Stream* client, bool serial_output) {
   newAltitude = bme.alt(metric);
   newDewPoint = bme.dew(metric);
+  if (serial_output) {
   client->print("\t\tAltitude: ");
   client->print(newAltitude);
   client->print((metric ? "m" : "ft"));
   client->print("\t\tDew point: ");
   client->print(newDewPoint);
   client->println("°" + String(metric ? 'C' : 'F'));
+  }
 
 }
 /* ==== END Functions ==== */
