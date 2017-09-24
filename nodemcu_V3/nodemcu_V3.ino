@@ -2,7 +2,6 @@
 #include <BME280I2C.h>
 #include <Wire.h>
 #include <ESP8266WiFi.h>
-#include <Wire.h>
 #include <PubSubClient.h>
 
 
@@ -31,7 +30,7 @@ PubSubClient client(espClient);
 BME280I2C bme;                   // Default : forced mode, standby time = 1000 ms
 // Oversampling = pressure ×1, temperature ×1, humidity ×1, filter off,
 bool metric = true;
-bool serial_output = false;
+bool serial_output = false; // true;
 long lastMsg = 0;
 int avgOverXMeasurements = 10;
 
