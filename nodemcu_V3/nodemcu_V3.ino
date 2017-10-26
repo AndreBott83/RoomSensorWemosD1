@@ -60,15 +60,14 @@ void setup() {
   }
 
   setup_wifi();
-  client.setServer(mqtt_server, 1883);
+  client.setServer(mqtt_server, 1883);  
 }
 
 
 void loop() {
   if (!client.connected()) {
     reconnect();
-  }
-  client.loop();
+  }  
 
   //  long now = millis();
   //  if (now - lastMsg > 10000) {
@@ -83,7 +82,7 @@ void loop() {
   client.publish(pressure_topic, String(newPres).c_str(), true);
   client.publish(altitude_topic, String(newAltitude).c_str(), true);
   client.publish(dewpoint_topic, String(newDewPoint).c_str(), true);
-
+  client.loop();
   //  }
 
   ESP.deepSleep(sleepSeconds * 1000000);
@@ -118,8 +117,9 @@ void setup_wifi() {
 }
 
 void reconnect() {
-  // Loop until we're reconnected
-  while (!client.connected()) {
+  // Try to reconnect 3 times than go to deep sleep
+  int retryCounter = 3;
+  while (!client.connected() AND retryCounter > 0) {
     if (serial_output) {
       Serial.print("Attempting MQTT connection...");
     }
@@ -134,8 +134,12 @@ void reconnect() {
         Serial.println(" try again in 5 seconds");
         // Wait 5 seconds before retrying
       }
-      delay(5000);
+      retryCounter = retryCounter - 1;
+      delay(1000);
     }
+  }
+  if (retryCounter <=0 AND !client.connected()) {
+    ESP.deepSleep(sleepSeconds * 1000000);
   }
 }
 
