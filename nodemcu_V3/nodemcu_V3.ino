@@ -9,8 +9,8 @@
 #define wifi_password "X3nopusLaevis"
 #define SERIAL_BAUD 115200
 
-#define room "LivingRoom"
-#define location "EG/"room
+#define room "Studio"
+#define location "OG2/"room
 #define mqtt_server "192.168.1.8"
 
 #define mqtt_user "nodemcu_"room
