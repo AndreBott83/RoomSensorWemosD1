@@ -1,23 +1,27 @@
 import java.util.HashMap
 
 var HashMap<String, String> sensorUpdateMap = new HashMap<String, String>()
-var int MINUTES_TO_CHECK_FOR_ACTIVITY = 30
+var int MINUTES_TO_CHECK_FOR_ACTIVITY = 50
 var String MAIL_HAS_BEEN_SENT = "mailHasBeenSent"
 var String RECIPIENT = "A.Bott@gmx.net"
-/*
-rule "On System Startup"
+
+rule "dailySummarize"
 when 
-System started
+    Time cron "0/50 * 0/1 * * ?"
 then
-sendMail(RECIPIENT, "This is the email subject", "This is the email body")
+    gSensor.allMembers.forEach[item | 
+        val maxString = item.toString + " maxValue= " + item.maximumSince(now.minusMinutes(1440))
+        logInfo( "cron", maxString.toString )              
+    ]
+    
 end
- */
+ 
+ 
 rule "Send Mail if sensor has not been updated for 10 min"
 when
     Item gSensor received update
 then	
-	gSensor.allMembers.forEach[item |		
-		//if ((now.millis - item.lastUpdate.millis) > TWENTY_MINUTES_IN_MILLIS){
+	gSensor.allMembers.forEach[item |				
 		if (!item.changedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {				
 			if(!sensorUpdateMap.containsKey(item.name) || !sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
 				sensorUpdateMap.put(item.name, MAIL_HAS_BEEN_SENT)
@@ -32,19 +36,4 @@ then
 			}
 		}
 	]
-	
-/*
-<item>.persist - Persists the current state
-<item>.lastUpdate - Query for the last update timestamp of a given item.
-<item>.historicState(AbstractInstant) - Retrieves the historic item at a certain point in time
-<item>.changedSince(AbstractInstant) - Checks if the state of the item has (ever) changed since a certain point in time
-<item>.updatedSince(AbstractInstant) - Checks if the state of the item has been updated since a certain point in time
-<item>.maximumSince(AbstractInstant) - Gets the Item with the maximum value (state) since a certain point in time
-<item>.minimumSince(AbstractInstant) - Gets the Item with the minimum value (state) since a certain point in time
-<item>.averageSince(AbstractInstant) - Gets the average value of the state of a given item since a certain point in time.
-<item>.deltaSince(AbstractInstant) - Gets the difference value of the state of a given item since a certain point in time.
-<item>.previousState() - Retrieves the previous item (returns HistoricItem).
-<item>.previousState(true) - Retrieves the previous item, skips items with equal state values and searches the first item with state not equal the current state (returns HistoricItem).
-<item>.sumSince(AbstractInstant) - Retrieves the sum of the previous states since a certain point in time. (OpenHab 1.8)
- */
 end
