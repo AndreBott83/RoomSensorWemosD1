@@ -7,17 +7,19 @@ var String RECIPIENT = "A.Bott@gmx.net"
 
 rule "dailySummarize"
 when 
-    Time cron "0/50 * 0/1 * * ?"
+    Time cron "0 0 0/1 * * ?"
 then
     gSensor.allMembers.forEach[item | 
-        val maxString = item.toString + " maxValue= " + item.maximumSince(now.minusMinutes(1440))
-        logInfo( "cron", maxString.toString )              
+        val Number maxValue = item.maximumSince(now.minusMinutes(1440)).state
+        val Number minValue = item.minimumSince(now.minusMinutes(1440)).state
+        val minMaxString = now + ": " +item.name.toString + " maxValue= " + String.format("%.2f",(maxValue).floatValue()) + " minValue= " + String.format("%.2f",(minValue).floatValue())
+        logInfo( "cron", minMaxString.toString )              
     ]
     
 end
  
  
-rule "Send Mail if sensor has not been updated for 10 min"
+rule "Send Mail if sensor has not been updated for 50 min"
 when
     Item gSensor received update
 then	
