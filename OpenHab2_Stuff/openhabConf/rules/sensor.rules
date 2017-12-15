@@ -7,35 +7,40 @@ var String RECIPIENT = "A.Bott@gmx.net"
 
 rule "dailySummarize"
 when 
-    Time cron "0 0 0/1 * * ?"
+    Time cron "0 0 23 * * ?"
 then
+    val String sensorInfo = now.toString + "\n\n"
     gSensor.allMembers.forEach[item | 
         val Number maxValue = item.maximumSince(now.minusMinutes(1440)).state
         val Number minValue = item.minimumSince(now.minusMinutes(1440)).state
-        val minMaxString = now + ": " +item.name.toString + " maxValue= " + String.format("%.2f",(maxValue).floatValue()) + " minValue= " + String.format("%.2f",(minValue).floatValue())
-        logInfo( "cron", minMaxString.toString )              
+                
+        sensorInfo = sensorInfo + item.name.toString
+        sensorInfo = sensorInfo + "\nLastUpdate: " + item.lastUpdate.toString             
+        sensorInfo = sensorInfo + "\nMaxValue: " + String.format("%.2f",(maxValue).floatValue())
+        sensorInfo = sensorInfo + "\nMinValue: " + String.format("%.2f",(minValue).floatValue())
+        sensorInfo = sensorInfo + "\n\n"              
     ]
+    sendMail(RECIPIENT, "Sensor Information!", sensorInfo.toString)
     
 end
- 
- 
-rule "Send Mail if sensor has not been updated for 50 min"
+
+rule "Send Mail if sensor has not been updated"
 when
-    Item gSensor received update
-then	
-	gSensor.allMembers.forEach[item |				
-		if (!item.changedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {				
+    Time cron "* 0/20 * * * ?"
+then
+    gSensor.allMembers.forEach[item |
+    	if (!item.updatedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {
 			if(!sensorUpdateMap.containsKey(item.name) || !sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
 				sensorUpdateMap.put(item.name, MAIL_HAS_BEEN_SENT)
 				val String failedUpdateString = "sensor " + item.toString + " did not update its value in the last " + String.valueOf(MINUTES_TO_CHECK_FOR_ACTIVITY) +  "minutes\nLast Update with values: " + item.previousState(true).timestamp.toString()		
 				sendMail(RECIPIENT, "Sensor failed to update!", failedUpdateString.toString)
-			}
-		} else {
+			}    		
+    	} else {
 			if(sensorUpdateMap.containsKey(item.name) && sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
 				sensorUpdateMap.remove(item.name)
 				val returnedSensorString = "sensor " + item.toString + " is online again!\nLast Update with values: " + item.previousState(true).timestamp.toString()
 				sendMail(RECIPIENT, "Sensor returned!", returnedSensorString.toString)					
 			}
-		}
-	]
+		}   
+    ]    
 end

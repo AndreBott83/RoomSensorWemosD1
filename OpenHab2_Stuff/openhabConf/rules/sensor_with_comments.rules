@@ -15,9 +15,31 @@ end
  
 rule "dailySummarize"
 When 
+/*
+Seconds
+Minutes
+Hours
+Day-of-Month
+Month
+Day-of-Week
+Year (optional field)
+*/
 Time cron "0/5 0 * * * * "
 then
     gSensor.allMembers.forEach[item | logInfo(item.name)]
+end
+ 
+rule "Test"
+when
+    Time cron "0/5 * * * * ?"
+then
+    gSensor.allMembers.forEach[item |
+    	if (!item.changedSince(now.minusMinutes(50))) {
+			logInfo( "cron", "Item: " + item.name.toString + " did not update in last 10 min")    		
+    	}    
+    ]
+    val lastItem = gSensor.allMembers.sortBy[lastUpdate].last
+    logInfo( "cron", "Item: " + lastItem.name.toString + " received update")    
 end
  
 // change to cronjob updating hashmap for every sensor every 5 min increasing the integer by 5
@@ -27,6 +49,7 @@ rule "Send Mail if sensor has not been updated for 10 min"
 when
     Item gSensor received update
 then	
+    Thread::sleep(100)
 	gSensor.allMembers.forEach[item |		
 		//if ((now.millis - item.lastUpdate.millis) > TWENTY_MINUTES_IN_MILLIS){
 		if (!item.changedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {				
@@ -45,6 +68,7 @@ then
 	]
 	
 /*
+val lastItem = gMyGroup.members.sortBy[lastUpdate].tail
 <item>.persist - Persists the current state
 <item>.lastUpdate - Query for the last update timestamp of a given item.
 <item>.historicState(AbstractInstant) - Retrieves the historic item at a certain point in time
