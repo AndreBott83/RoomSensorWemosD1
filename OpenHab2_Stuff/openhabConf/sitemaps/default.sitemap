@@ -12,56 +12,5 @@ sitemap default label="Overview" {
 		Group item=All label="All Groups"        
 	}
     
-    Frame label="Wetter" {
-		Text item=Condition {
-			Frame label="Atmosphere" {
-				Text item=Humidity        
-				Text item=Visibility      
-				Text item=Pressure        
-				Text item=Pressure_Trend  
-				Text item=Ozone           
-				Text item=UV_Index        
-			}
-			Frame label="Clouds" {
-				Text item=Clouds
-			}
-			Frame label="condition" {
-				Text item=Condition
-				Text item=Condition_ID
-				Text item=ObservationTime
-				Text item=LastUpdate
-				Text item=CommonId
-			}
-			Frame label="precipitation" {
-				Text item=Rain
-				Text item=Snow
-				Text item=Precip_Probability
-			}
-			Frame label="temperature" {
-				Text item=Temperature
-				Text item=Temp_Feel
-				Text item=Temp_Dewpoint
-			}
-			Frame label="wind" {
-				Text item=Wind_Speed
-				Text item=Wind_Direction
-				Text item=Wind_Degree
-				Text item=Wind_Gust
-				Text item=Wind_Chill
-			}
- 
-			Frame label="forecast 1 day" {
-				Text item=Temp_MinMax_1
-				Text item=Temp_MinMax_2
-				Text item=Temp_MinMax_3
-				Text item=Temp_MinMax_4
-				Text item=Temp_MinMax_5
-				Text item=Temp_Min_1
-				Text item=Temp_Max_1
-				Text item=Temp_MinMax_1
-			}
- 
-		}
-	}
 }
 
