@@ -8,4 +8,5 @@ Strategies {
 Items {    
     gWeatherStation* : strategy = everyChange
     gSensor* : strategy = everyChange, restoreOnStartup
+    gSensorStatus* : strategy = everyChange, restoreOnStartup
 }

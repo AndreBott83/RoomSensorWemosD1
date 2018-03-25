@@ -2,6 +2,7 @@ import java.util.HashMap
 
 var HashMap<String, String> sensorUpdateMap = new HashMap<String, String>()
 var int MINUTES_TO_CHECK_FOR_ACTIVITY = 50
+var int HoursTillBatteryIsConsideredDead = 4
 var String MAIL_HAS_BEEN_SENT = "mailHasBeenSent"
 var String RECIPIENT = "A.Bott@gmx.net"
 
@@ -24,23 +25,92 @@ then
     
 end
 
-rule "Send Mail if sensor has not been updated"
+rule "checkBatteryAndLog"
 when
-    Time cron "* 0/20 * * * ?"
+	Time cron "* * 4 * * ?"
 then
-    gSensor.allMembers.forEach[item |
-    	if (!item.updatedSince(now.minusMinutes(MINUTES_TO_CHECK_FOR_ACTIVITY))) {
-			if(!sensorUpdateMap.containsKey(item.name) || !sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
-				sensorUpdateMap.put(item.name, MAIL_HAS_BEEN_SENT)
-				val String failedUpdateString = "sensor " + item.toString + " did not update its value in the last " + String.valueOf(MINUTES_TO_CHECK_FOR_ACTIVITY) +  "minutes\nLast Update with values: " + item.previousState(true).timestamp.toString()		
-				sendMail(RECIPIENT, "Sensor failed to update!", failedUpdateString.toString)
-			}    		
-    	} else {
-			if(sensorUpdateMap.containsKey(item.name) && sensorUpdateMap.get(item.name).equals(MAIL_HAS_BEEN_SENT)){
-				sensorUpdateMap.remove(item.name)
-				val returnedSensorString = "sensor " + item.toString + " is online again!\nLast Update with values: " + item.previousState(true).timestamp.toString()
-				sendMail(RECIPIENT, "Sensor returned!", returnedSensorString.toString)					
-			}
-		}   
-    ]    
+	var boolean BatteryBad = false
+	gBad.allMembers.forEach[ item |
+		if (item.updatedSince(now.minusHours(HoursTillBatteryIsConsideredDead))) {
+			BatteryBad = true
+		}
+	]
+	if (BatteryBad) {
+		postUpdate(BatteryStatusBad, 1)
+	} else {
+		if (Integer.valueOf(BatteryStatusBad.previousState.state.toString).equals(1)) {
+			sendMail(RECIPIENT, "Sensor in Bathroom failed to update!", "All sensors in bathroom did not update.\n\nReplace Battery soon!")			
+		}
+		postUpdate(BatteryStatusBad, 0)		
+	}
+	BatteryStatusBad.persist()
+	
+	var boolean BatterySleepingRoom = false
+	gSleepingRoom.allMembers.forEach[item |
+		if (item.updatedSince(now.minusHours(HoursTillBatteryIsConsideredDead))) {
+			BatterySleepingRoom = true
+		}
+	]
+	if (BatterySleepingRoom) {
+		postUpdate(BatteryStatusSleepingRoom, 1)
+	} else {
+		if (Integer.valueOf(BatteryStatusSleepingRoom.previousState.state.toString).equals(1)) {
+			sendMail(RECIPIENT, "Sensor in SleepingRoom failed to update!", "All sensors in SleepingRoom did not update.\n\nReplace Battery soon!")			
+		}
+		postUpdate(BatteryStatusSleepingRoom, 0)		
+	}
+	BatteryStatusSleepingRoom.persist()
+	
+
+	var boolean BatteryLivingRoom = false
+	gLivingRoom.allMembers.forEach[item |
+		if (item.updatedSince(now.minusHours(HoursTillBatteryIsConsideredDead))) {
+			BatteryLivingRoom = true
+		}
+	]
+	if (BatteryLivingRoom) {
+		postUpdate(BatteryStatusLivingRoom, 1)
+	} else {
+		if (Integer.valueOf(BatteryStatusLivingRoom.previousState.state.toString).equals(1)) {
+			sendMail(RECIPIENT, "Sensor in LivingRoom failed to update!", "All sensors in LivingRoom did not update.\n\nReplace Battery soon!")			
+		}
+		postUpdate(BatteryStatusLivingRoom, 0)		
+	}
+	BatteryStatusLivingRoom.persist()
+	
+
+	var boolean BatteryBasement = false
+	gBasement.allMembers.forEach[item |
+		if (item.updatedSince(now.minusHours(HoursTillBatteryIsConsideredDead))) {
+			BatteryBasement = true
+		}
+	]
+	if (BatteryBasement) {
+		postUpdate(BatteryStatusBasement, 1)
+	} else {
+		if (Integer.valueOf(BatteryStatusBasement.previousState.state.toString).equals(1)) {
+			sendMail(RECIPIENT, "Sensor in Basement failed to update!", "All sensors in Basement did not update.\n\nReplace Battery soon!")			
+		}
+		postUpdate(BatteryStatusBasement, 0)		
+	}
+	BatteryStatusBasement.persist()
+	
+	var boolean BatteryStudio = false
+	gStudio.allMembers.forEach[item |
+		if (item.updatedSince(now.minusHours(HoursTillBatteryIsConsideredDead))) {
+			BatteryStudio = true
+		}
+	]
+	if (BatteryStudio) {
+		postUpdate(BatteryStatusStudio, 1)
+	} else {
+		if (Integer.valueOf(BatteryStatusStudio.previousState.state.toString).equals(1)) {
+			sendMail(RECIPIENT, "Sensor in Studio failed to update!", "All sensors in Studio did not update.\n\nReplace Battery soon!")			
+		}
+		postUpdate(BatteryStatusStudio, 0)		
+	}
+	BatteryStatusStudio.persist()
+		
+	
+
 end
