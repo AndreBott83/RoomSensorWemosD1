@@ -1,10 +1,25 @@
 import java.util.HashMap
+import org.eclipse.xtext.xbase.lib.Functions
 
 var HashMap<String, String> sensorUpdateMap = new HashMap<String, String>()
 var int MINUTES_TO_CHECK_FOR_ACTIVITY = 50
 var int HoursTillBatteryIsConsideredDead = 4
 var String MAIL_HAS_BEEN_SENT = "mailHasBeenSent"
 var String RECIPIENT = "A.Bott@gmx.net"
+
+/*
+val Functions$Function4<String, String, String, String, String> makeTableRow = [
+    name,
+    minValue,
+    maxValue,
+    TSLastValue |    	
+		tableRow = "somerow"          
+    ]
+
+
+//makeTableRow.apply()
+*/
+
 
 rule "dailySummarize"
 when 
@@ -20,6 +35,14 @@ then
         sensorInfo = sensorInfo + "\nMaxValue: " + String.format("%.2f",(maxValue).floatValue())
         sensorInfo = sensorInfo + "\nMinValue: " + String.format("%.2f",(minValue).floatValue())
         sensorInfo = sensorInfo + "\n\n"              
+    ]
+    
+    gTemperatures.allMembers.forEach[item |
+    	
+    ]
+    
+    gHumidities.allMembers.forEach [item |
+    	
     ]
     sendMail(RECIPIENT, "Sensor Information!", sensorInfo.toString)
     
