@@ -27,7 +27,7 @@ end
 
 rule "checkBatteryAndLog"
 when
-	Time cron "* * 4 * * ?"
+	Time cron "0 0 0/2 * * ?"
 then
 	var boolean BatteryBad = false
 	gBad.allMembers.forEach[ item |
