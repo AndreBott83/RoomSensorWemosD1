@@ -7,50 +7,115 @@ var int HoursTillBatteryIsConsideredDead = 4
 var String MAIL_HAS_BEEN_SENT = "mailHasBeenSent"
 var String RECIPIENT = "A.Bott@gmx.net"
 
-/*
-val Functions$Function4<String, String, String, String, String> makeTableRow = [
+
+val Functions$Function5<String, String, String, String, String, String> makeTableRow = [
     name,
     minValue,
     maxValue,
-    TSLastValue |    	
-		tableRow = "somerow"          
+    currentValue,
+    TSLastValue |  
+    
+    //create name field with 50 characters
+    var nameTable = name
+    if (nameTable.length < 40) {
+    	var i = nameTable.length()
+    	while ((i=i+1) < 30) {    		
+    		nameTable = nameTable + " "    		
+		}	
+    } else {
+    	nameTable = nameTable.substring(0,49) + " "    	
+    }
+    
+    
+    //create min and max fields with 10 chars
+    var minValueTable = minValue
+    var i = minValueTable.length()
+    while ((i=i+1) < 10) {
+    	minValueTable = " " + minValueTable
+    }
+
+    var maxValueTable = maxValue
+    var j = maxValueTable.length()
+    while ((j=j+1) < 10) {
+    	maxValueTable = " " + maxValueTable
+    }
+    
+    var currentValueTable = currentValue
+    var k = currentValueTable.length()
+    while ((k=k+1) < 13) {
+    	currentValueTable = " " + currentValueTable
+    }
+	
+	var String tableRow = ""
+	tableRow = tableRow + "| " + nameTable + " | " + minValueTable + " | " + maxValueTable + " | " + currentValueTable + " | " + TSLastValue + " |\n"
+	return tableRow
     ]
-
-
-//makeTableRow.apply()
-*/
 
 
 rule "dailySummarize"
 when 
     Time cron "0 0 23 * * ?"
 then
-    val String sensorInfo = now.toString + "\n\n"
-    gSensor.allMembers.forEach[item | 
-        val Number maxValue = item.maximumSince(now.minusMinutes(1440)).state
-        val Number minValue = item.minimumSince(now.minusMinutes(1440)).state
-                
-        sensorInfo = sensorInfo + item.name.toString
-        sensorInfo = sensorInfo + "\nLastUpdate: " + item.lastUpdate.toString             
-        sensorInfo = sensorInfo + "\nMaxValue: " + String.format("%.2f",(maxValue).floatValue())
-        sensorInfo = sensorInfo + "\nMinValue: " + String.format("%.2f",(minValue).floatValue())
-        sensorInfo = sensorInfo + "\n\n"              
-    ]
-    
+    val String timeAtRun = now.toString + "\n\n"    
+       
+    val temperatureTable = makeTableRow.apply("name","minValue","maxValue","currentValue","LastUpdated")  
     gTemperatures.allMembers.forEach[item |
+    	var Number maxValue = item.maximumSince(now.minusMinutes(1440)).state as Number
+    	var Number minValue = item.minimumSince(now.minusMinutes(1440)).state as Number
+    	var Number currentValue = item.state as Number
+    	
+    	var String maxValueString = String.format("%.2f",(maxValue).floatValue())   	
+        var String minValueString = String.format("%.2f",(minValue).floatValue())
+        var String currentValueString = String.format("%.2f",(currentValue).floatValue())
+        
+        
+        var String lastUpdate = item.lastUpdate.toString       
+        temperatureTable = temperatureTable + makeTableRow.apply(item.name.toString,minValueString,maxValueString,currentValueString,lastUpdate)       
     	
     ]
     
-    gHumidities.allMembers.forEach [item |
+  val humiditiesTable = makeTableRow.apply("name","minValue","maxValue","currentValue","LastUpdated")  
+    gHumidities.allMembers.forEach[item |
+    	var Number maxValue = item.maximumSince(now.minusMinutes(1440)).state as Number
+    	var Number minValue = item.minimumSince(now.minusMinutes(1440)).state as Number
+    	var Number currentValue = item.state as Number
     	
-    ]
-    sendMail(RECIPIENT, "Sensor Information!", sensorInfo.toString)
+    	var String maxValueString = String.format("%.2f",(maxValue).floatValue())   	
+        var String minValueString = String.format("%.2f",(minValue).floatValue())
+        var String currentValueString = String.format("%.2f",(currentValue).floatValue())
+        
+        
+        var String lastUpdate = item.lastUpdate.toString
+        humiditiesTable = humiditiesTable + makeTableRow.apply(item.name.toString,minValueString,maxValueString,currentValueString,lastUpdate)       
+    	
+	]  
+	
+	var String batteryInformationTable = ""
+	//logInfo("test",BatteryStatusBad.previousState(true).timestamp.toString)
+	//logInfo("test",String.valueOf(BatteryStatusBad.previousState(true) === null))
+	//var String batteryStateActiveSince = String.valueOf((now.millis - BatteryStatusStudio.previousState(true).timestamp.time).floatValue()/1000/60/60/24) + " Tage"
+	
+	batteryInformationTable = batteryInformationTable + "Battery Basement: " + BatteryStatusBasement.state.toString + " (since: " + "-" +" )\n"
+	batteryInformationTable = batteryInformationTable + "Battery LivingRoom: " + BatteryStatusLivingRoom.state.toString + "\n"
+	batteryInformationTable = batteryInformationTable + "Battery SleepingRoom: " + BatteryStatusSleepingRoom.state.toString + "\n"
+	batteryInformationTable = batteryInformationTable + "Battery Bad: " + BatteryStatusBad.state.toString + "\n"
+	batteryInformationTable = batteryInformationTable + "Battery Studio: " + BatteryStatusStudio.state.toString + "\n"
+	//batteryInformationTable = batteryInformationTable + "State active since : " + batteryStateActiveSince + "\n"
+	
+	
+	var mailBody = ""
+	mailBody = "Sensor Information: " + timeAtRun
+	mailBody = mailBody + batteryInformationTable + "\n\n"
+	mailBody = mailBody + "Temperaturen:\n" + temperatureTable +"\n"
+	mailBody = mailBody + "relative Feuchte:\n" + humiditiesTable
+		
+    sendMail(RECIPIENT, "Sensor Information!", mailBody.toString)    
     
 end
 
 rule "checkBatteryAndLog"
 when
-	Time cron "0 0 0/2 * * ?"
+	Time cron "0 0 0/2 * * ?"	
 then
 	var boolean BatteryBad = false
 	gBad.allMembers.forEach[ item |
@@ -59,7 +124,7 @@ then
 		}
 	]
 	if (BatteryBad) {
-		postUpdate(BatteryStatusBad, 1)
+		postUpdate(BatteryStatusBad, 1)		
 	} else {
 		if (Integer.valueOf(BatteryStatusBad.previousState.state.toString).equals(1)) {
 			sendMail(RECIPIENT, "Sensor in Bathroom failed to update!", "All sensors in bathroom did not update.\n\nReplace Battery soon!")			
