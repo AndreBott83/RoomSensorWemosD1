@@ -7,6 +7,52 @@ var int HoursTillBatteryIsConsideredDead = 4
 var String MAIL_HAS_BEEN_SENT = "mailHasBeenSent"
 var String RECIPIENT = "A.Bott@gmx.net"
 
+val Functions$Function2<String, Long, String> getBatteryStatus = [
+	name,
+	timestampMillis |
+	
+	var String batteryStatus = ""
+	var item = gSensorStatus.members.filter[item|item.name == name].head
+	var Number currentState = item.state as Number
+	
+	var pastTime = now.withTimeAtStartOfDay
+	var pastState = item.historicState(pastTime)
+	while (pastState !== null) {		
+		pastTime = pastTime.minusDays(1)
+		pastState = item.historicState(pastTime)
+	}
+	
+	
+	if (currentState == 0) {
+		if (item.previousState(true) === null) {
+			var Float timeInDaysDead = (timestampMillis - pastTime.millis).floatValue()/1000/60/60/24
+			batteryStatus = "Off since " +  String.format("%.2f",timeInDaysDead) + " days" 
+		} else {
+			var timeOffline = item.previousState(true).timestamp			
+			var Integer daysLastBattery = 0
+			var timeToCheck = now.withMillis(timeOffline.time)
+			while (item.historicState(timeToCheck) !== null) {
+				daysLastBattery = daysLastBattery + 1
+				timeToCheck = timeToCheck.minusDays(daysLastBattery)
+			}
+			batteryStatus = "Last BatteryLife: " + String.valueOf(daysLastBattery) + " days"
+		}
+	} else {
+		if (item.previousState(true) === null) {
+			var Float timeInDaysAlive = (timestampMillis - pastTime.millis).floatValue()/1000/60/60/24			
+			batteryStatus = "Online since " +  String.format("%.2f",timeInDaysAlive) + " days"
+		} else {
+			var Float timeInDaysAlive = (timestampMillis - item.previousState(true).timestamp.time).floatValue()/1000/60/60/24
+			batteryStatus = "Online since " +  String.format("%.2f",timeInDaysAlive) + " days"
+		}
+		
+	}	
+		
+	return batteryStatus
+	//String.valueOf(BatteryStatusBad.previousState(true) === null))
+	//var String batteryStateActiveSince = String.valueOf((now.millis - BatteryStatusStudio.previousState(true).timestamp.time).floatValue()/1000/60/60/24) + " Tage"
+		
+]
 
 val Functions$Function5<String, String, String, String, String, String> makeTableRow = [
     name,
@@ -17,55 +63,65 @@ val Functions$Function5<String, String, String, String, String, String> makeTabl
     
     //create name field with 50 characters
     var nameTable = name
-    if (nameTable.length < 40) {
+    if (nameTable.length < 30) {
     	var i = nameTable.length()
     	while ((i=i+1) < 30) {    		
     		nameTable = nameTable + " "    		
 		}	
     } else {
-    	nameTable = nameTable.substring(0,49) + " "    	
+    	nameTable = nameTable.substring(0,29) + " "    	
     }
     
     
     //create min and max fields with 10 chars
     var minValueTable = minValue
     var i = minValueTable.length()
-    while ((i=i+1) < 10) {
+    while ((i=i+1) < 15) {
     	minValueTable = " " + minValueTable
     }
 
     var maxValueTable = maxValue
     var j = maxValueTable.length()
-    while ((j=j+1) < 10) {
+    while ((j=j+1) < 15) {
     	maxValueTable = " " + maxValueTable
     }
     
     var currentValueTable = currentValue
     var k = currentValueTable.length()
-    while ((k=k+1) < 13) {
+    while ((k=k+1) < 15) {
     	currentValueTable = " " + currentValueTable
+    }
+    
+    var TSLastValueTable = TSLastValue
+    var l = TSLastValueTable.length()
+    while ((l=l+1) < 30) {
+    	TSLastValueTable = TSLastValueTable + " "
     }
 	
 	var String tableRow = ""
-	tableRow = tableRow + "| " + nameTable + " | " + minValueTable + " | " + maxValueTable + " | " + currentValueTable + " | " + TSLastValue + " |\n"
+	tableRow = tableRow + "| " + nameTable + " | " + minValueTable + " | " + maxValueTable + " | " + currentValueTable + " | " + TSLastValueTable + " |\n"
 	return tableRow
-    ]
+]
 
 
 rule "dailySummarize"
-when 
+when
+	//Time cron "0/10 * * * * ?" 
     Time cron "0 0 23 * * ?"
 then
-    val String timeAtRun = now.toString + "\n\n"    
+    val String timeAtRun = now.toString + "\n\n"   
+    val Long timeAtRunMillis = now.millis
        
     val temperatureTable = makeTableRow.apply("name","minValue","maxValue","currentValue","LastUpdated")  
     gTemperatures.allMembers.forEach[item |
     	var Number maxValue = item.maximumSince(now.minusMinutes(1440)).state as Number
+    	var String maxTS = item.maximumSince(now.minusMinutes(1440)).timestamp.toString.substring(11,16)
     	var Number minValue = item.minimumSince(now.minusMinutes(1440)).state as Number
+    	var String minTS = item.minimumSince(now.minusMinutes(1440)).timestamp.toString.substring(11,16)
     	var Number currentValue = item.state as Number
     	
-    	var String maxValueString = String.format("%.2f",(maxValue).floatValue())   	
-        var String minValueString = String.format("%.2f",(minValue).floatValue())
+    	var String maxValueString = String.format("%.2f",(maxValue).floatValue()) + " (" + maxTS + ")"   	
+        var String minValueString = String.format("%.2f",(minValue).floatValue()) + " (" + minTS + ")"
         var String currentValueString = String.format("%.2f",(currentValue).floatValue())
         
         
@@ -77,11 +133,13 @@ then
   val humiditiesTable = makeTableRow.apply("name","minValue","maxValue","currentValue","LastUpdated")  
     gHumidities.allMembers.forEach[item |
     	var Number maxValue = item.maximumSince(now.minusMinutes(1440)).state as Number
+    	var String maxTS = item.maximumSince(now.minusMinutes(1440)).timestamp.toString.substring(11,16)
     	var Number minValue = item.minimumSince(now.minusMinutes(1440)).state as Number
+    	var String minTS = item.minimumSince(now.minusMinutes(1440)).timestamp.toString.substring(11,16)
     	var Number currentValue = item.state as Number
     	
-    	var String maxValueString = String.format("%.2f",(maxValue).floatValue())   	
-        var String minValueString = String.format("%.2f",(minValue).floatValue())
+    	var String maxValueString = String.format("%.2f",(maxValue).floatValue()) + " (" + maxTS + ")"   	
+        var String minValueString = String.format("%.2f",(minValue).floatValue()) + " (" + minTS + ")"
         var String currentValueString = String.format("%.2f",(currentValue).floatValue())
         
         
@@ -95,11 +153,11 @@ then
 	//logInfo("test",String.valueOf(BatteryStatusBad.previousState(true) === null))
 	//var String batteryStateActiveSince = String.valueOf((now.millis - BatteryStatusStudio.previousState(true).timestamp.time).floatValue()/1000/60/60/24) + " Tage"
 	
-	batteryInformationTable = batteryInformationTable + "Battery Basement: " + BatteryStatusBasement.state.toString + " (since: " + "-" +" )\n"
-	batteryInformationTable = batteryInformationTable + "Battery LivingRoom: " + BatteryStatusLivingRoom.state.toString + "\n"
-	batteryInformationTable = batteryInformationTable + "Battery SleepingRoom: " + BatteryStatusSleepingRoom.state.toString + "\n"
-	batteryInformationTable = batteryInformationTable + "Battery Bad: " + BatteryStatusBad.state.toString + "\n"
-	batteryInformationTable = batteryInformationTable + "Battery Studio: " + BatteryStatusStudio.state.toString + "\n"
+	batteryInformationTable = batteryInformationTable + "Battery Basement: " + BatteryStatusBasement.state.toString + " (" + getBatteryStatus.apply("BatteryStatusBasement",timeAtRunMillis) + ")\n"
+	batteryInformationTable = batteryInformationTable + "Battery LivingRoom: " + BatteryStatusLivingRoom.state.toString + " (" + getBatteryStatus.apply("BatteryStatusLivingRoom",timeAtRunMillis) + ")\n"
+	batteryInformationTable = batteryInformationTable + "Battery SleepingRoom: " + BatteryStatusSleepingRoom.state.toString + " (" + getBatteryStatus.apply("BatteryStatusSleepingRoom",timeAtRunMillis) + ")\n"
+	batteryInformationTable = batteryInformationTable + "Battery Bad: " + BatteryStatusBad.state.toString + " (" + getBatteryStatus.apply("BatteryStatusBad",timeAtRunMillis) + ")\n"
+	batteryInformationTable = batteryInformationTable + "Battery Studio: " + BatteryStatusStudio.state.toString + " (" + getBatteryStatus.apply("BatteryStatusStudio",timeAtRunMillis) + ")\n"
 	//batteryInformationTable = batteryInformationTable + "State active since : " + batteryStateActiveSince + "\n"
 	
 	
@@ -114,8 +172,9 @@ then
 end
 
 rule "checkBatteryAndLog"
-when
-	Time cron "0 0 0/2 * * ?"	
+when		
+	//Time cron "*/5 * * * * ?"
+	Time cron "0 0 0/2 * * ?"
 then
 	var boolean BatteryBad = false
 	gBad.allMembers.forEach[ item |
