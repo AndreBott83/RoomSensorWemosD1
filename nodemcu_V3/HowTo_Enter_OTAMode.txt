@@ -1,0 +1,2 @@
+1) turn on NodeMCU and press FlashButton(D3) and keep pressed until LED turns Blue
+2) Arduino IDE neustarten und unter Ports den esp8266 auswählen

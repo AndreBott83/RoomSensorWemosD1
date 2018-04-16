@@ -5,8 +5,10 @@ Group gEG (All)
 Group gUG1 (All)
 Group gBad (gOG1)
 Group gSleepingRoom (gOG1)
+Group gZimmerSebastian (gOG1)
 Group gLivingRoom (gEG)
 Group gBasement (gUG1)
+Group gWaschkeller (gUG1)
 Group gStudio (gOG2)
 Group gSensor (All)
 Group gWeatherStation (All)
@@ -63,6 +65,23 @@ Number MQTT_Sensor_DewPoint_Studio "Dewpoint Studio [%.0f °C]" <dewpoint> (gDew
 
 Number BatteryStatusStudio "Battery Status Studio [%s]" (gSensorStatus)
 
+
+Number MQTT_Sensor_Temp_Waschkeller "Temperature Waschkeller [%.2f °C]" <temperature> (gTemperatures,gWaschkeller) [ "CurrentTemperature" ] {mqtt="<[ds214mosquitto:Home/UG1/Waschkeller/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_Waschkeller "Humidity Waschkeller [%.0f %%]" <humidity> (gHumidities,gWaschkeller) [ "CurrentHumidity" ] {mqtt="<[ds214mosquitto:Home/UG1/Waschkeller/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_Waschkeller "Pressure Waschkeller [%.0f hPa]" <pressure> (gPressures,gWaschkeller) {mqtt="<[ds214mosquitto:Home/UG1/Waschkeller/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_Waschkeller "Altitude Waschkeller [%.0f m ü.NN]" <altitude> (gAltitudes,gWaschkeller) {mqtt="<[ds214mosquitto:Home/UG1/Waschkeller/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_Waschkeller "Dewpoint Waschkeller [%.0f °C]" <dewpoint> (gDewpoints,gWaschkeller) {mqtt="<[ds214mosquitto:Home/UG1/Waschkeller/Dewpoint:state:default]"}
+
+Number BatteryStatusWaschkeller "Battery Status Waschkeller [%s]" (gSensorStatus)
+
+
+Number MQTT_Sensor_Temp_ZimmerSebastian "Temperature ZimmerSebastian [%.2f °C]" <temperature> (gTemperatures,gZimmerSebastian) [ "CurrentTemperature" ] {mqtt="<[ds214mosquitto:Home/OG1/ZimmerSebastian/Temperature:state:default]"}
+Number MQTT_Sensor_Hum_ZimmerSebastian "Humidity ZimmerSebastian [%.0f %%]" <humidity> (gHumidities,gZimmerSebastian) [ "CurrentHumidity" ] {mqtt="<[ds214mosquitto:Home/OG1/ZimmerSebastian/Humidity:state:default]"}
+Number MQTT_Sensor_Pres_ZimmerSebastian "Pressure ZimmerSebastian [%.0f hPa]" <pressure> (gPressures,gZimmerSebastian) {mqtt="<[ds214mosquitto:Home/OG1/ZimmerSebastian/Pressure:state:default]"}
+Number MQTT_Sensor_Altitude_ZimmerSebastian "Altitude ZimmerSebastian [%.0f m ü.NN]" <altitude> (gAltitudes,gZimmerSebastian) {mqtt="<[ds214mosquitto:Home/OG1/ZimmerSebastian/Altitude:state:default]"}
+Number MQTT_Sensor_DewPoint_ZimmerSebastian "Dewpoint ZimmerSebastian [%.0f °C]" <dewpoint> (gDewpoints,gZimmerSebastian) {mqtt="<[ds214mosquitto:Home/OG1/ZimmerSebastian/Dewpoint:state:default]"}
+
+Number BatteryStatusZimmerSebastian "Battery Status ZimmerSebastian [%s]" (gSensorStatus)
 
 // Weather Info
 

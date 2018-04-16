@@ -9,8 +9,8 @@
 #define wifi_password "X3nopusLaevis"
 #define SERIAL_BAUD 115200
 
-#define room "Studio"
-#define location "OG2/"room
+#define room "ZimmerSebastian"
+#define location "OG1/"room
 #define mqtt_server "192.168.1.8"
 
 #define mqtt_user "nodemcu_"room
@@ -96,13 +96,15 @@ void setup() {
   });
   ArduinoOTA.setHostname(location);
   ArduinoOTA.begin();
-    
-  while (!bme.begin()) {
+
+  int counter = 0;  
+  while (!bme.begin() && counter <5) {
       writeLineToOutput(String(location) + String(": Could not find BME280 sensor!"));
 //      if (serial_output) {
 //        Serial.println("Could not find BME280 sensor!");
 //      }
       delay(1000);
+      ++counter;
     }
 }
 
@@ -181,8 +183,8 @@ void setup_wifi() {
 }
 
 void reconnect() {
-  // Try to reconnect 3 times than go to deep sleep
-  int retryCounter = 3;
+  // Try to reconnect 2 times than go to deep sleep
+  int retryCounter = 2;
   while (!client.connected() && retryCounter > 0) {    
     if (serial_output) {
       Serial.print("Attempting MQTT connection...");
