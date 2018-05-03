@@ -63,9 +63,9 @@ val Functions$Function5<String, String, String, String, String, String> makeTabl
     
     //create name field with 50 characters
     var nameTable = name
-    if (nameTable.length < 30) {
+    if (nameTable.length <= 30) {
     	var i = nameTable.length()
-    	while ((i=i+1) < 30) {    		
+    	while ((i=i+1) <= 30) {    		
     		nameTable = nameTable + " "    		
 		}	
     } else {
