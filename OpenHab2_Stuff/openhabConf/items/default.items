@@ -85,48 +85,48 @@ Number BatteryStatusZimmerSebastian "Battery Status ZimmerSebastian [%s]" (gSens
 
 // Weather Info
 
-String Conditions "Conditions [%s]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#conditions"}
-Image Icon "Icon" (gWeatherStation) {channel="weatherunderground:weather:DL:current#icon"}
-String IconKey "Icon key [%s]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#iconKey"}
-DateTime ObservationTime "Observation time [%1$tH:%1$tM]" <clock>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#observationTime"}
-String ObservationLocation "Location [%s]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#location"}
-String Station "Station [%s]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#stationId"}
+String Conditions "Conditions [%s]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#conditions"}
+Image Icon "Icon" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#icon"}
+String IconKey "Icon key [%s]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#iconKey"}
+DateTime ObservationTime "Observation time [%1$tH:%1$tM]" <clock>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#observationTime"}
+String ObservationLocation "Location [%s]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#location"}
+String Station "Station [%s]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#stationId"}
 
-Number Temperature "Current temperature [%.1f °C]" <temperature> (gWeatherStation) {channel="weatherunderground:weather:DL:current#temperature"}
-Number FeelTemp "Feeling temperature [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#feelingTemperature"}
+Number Temperature "Current temperature [%.1f °C]" <temperature> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#temperature"}
+Number FeelTemp "Feeling temperature [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#feelingTemperature"}
 
-Number Humidity "Humidity [%d %%]" <humidity> (gWeatherStation) {channel="weatherunderground:weather:DL:current#relativeHumidity"}
-Number Pressure "Pressure [%.0f hPa]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#pressure"}
-Number PressureTrend "Pressure trend [%s]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#pressureTrend"}
+Number Humidity "Humidity [%d %%]" <humidity> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#relativeHumidity"}
+Number Pressure "Pressure [%.0f hPa]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#pressure"}
+Number PressureTrend "Pressure trend [%s]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#pressureTrend"}
 
-Number RainD "Rain [%.1f mm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:DL:current#precipitationDay"}
-Number RainH "Rain [%.1f mm/h]" <rain> (gWeatherStation) {channel="weatherunderground:weather:DL:current#precipitationHour"}
+Number RainD "Rain [%.1f mm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#precipitationDay"}
+Number RainH "Rain [%.1f mm/h]" <rain> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#precipitationHour"}
 
-String WindDirection "Wind direction [%s]" <wind> (gWeatherStation) {channel="weatherunderground:weather:DL:current#windDirection"}
-Number WindDirection2 "Wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#windDirectionDegrees"}
-Number WindSpeed "Wind speed [%.1f km/h]" <wind> (gWeatherStation) {channel="weatherunderground:weather:DL:current#windSpeed"}
-Number WindGust "Wind gust [%.1f km/h]" <wind> (gWeatherStation) {channel="weatherunderground:weather:DL:current#windGust"}
+String WindDirection "Wind direction [%s]" <wind> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#windDirection"}
+Number WindDirection2 "Wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#windDirectionDegrees"}
+Number WindSpeed "Wind speed [%.1f km/h]" <wind> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#windSpeed"}
+Number WindGust "Wind gust [%.1f km/h]" <wind> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#windGust"}
 
-Number DewPoint "Dew Point [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#dewPoint"}
-Number HeatIndex "Heat Index [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#heatIndex"}
-Number WindChill "Wind Chill [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:current#windChill"}
-Number Visibility "Visibility [%.1f km]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#visibility"}
-Number SolarRadiation "Solar Radiation [%.2f] W/m2"  (gWeatherStation) {channel="weatherunderground:weather:DL:current#solarRadiation"}
-Number UV "UV Index [%.1f]" (gWeatherStation) {channel="weatherunderground:weather:DL:current#UVIndex"}
+Number DewPoint "Dew Point [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#dewPoint"}
+Number HeatIndex "Heat Index [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#heatIndex"}
+Number WindChill "Wind Chill [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#windChill"}
+Number Visibility "Visibility [%.1f km]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#visibility"}
+Number SolarRadiation "Solar Radiation [%.2f] W/m2"  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#solarRadiation"}
+Number UV "UV Index [%.1f]" (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:current#UVIndex"}
 
-DateTime ForecastTime "Forecast time [%1$tH:%1$tM]" <clock>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#forecastTime"}
-String ForecastCondition "Forecast conditions [%s]"  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#conditions"}
-Image ForecastIcon "Forecast icon"  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#icon"}
-String ForecastIconKey "Forecast icon key [%s]"  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#iconKey"}
-Number ForecastTempMin "Forecast min temp [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#minTemperature"}
-Number ForecastTempMax "Forecast max temp [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#maxTemperature"}
-Number ForecastHumidity "Forecast Humidity [%d %%]" <humidity>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#relativeHumidity"}
-Number ForecastProbaPrecip "Proba precip [%d %%]" <rain>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#probaPrecipitation"}
-Number ForecastRain "Rain [%.1f mm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#precipitationDay"}
-Number ForecastSnow "Snow [%.2f cm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#snow"}
-String ForecastMaxWindDirection "Max wind direction [%s]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#maxWindDirection"}
-Number ForecastMaxWindDirection2 "Max wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#maxWindDirectionDegrees"}
-Number ForecastMaxWindSpeed "Max wind speed [%.1f km/h]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#maxWindSpeed"}
-String ForecastAvgWindDirection "Avg wind direction [%s]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#averageWindDirection"}
-Number ForecastAvgWindDirection2 "Avg wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#averageWindDirectionDegrees"}
-Number ForecastAvgWindSpeed "Avg wind speed [%.1f km/h]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:DL:forecastToday#averageWindSpeed"}
+DateTime ForecastTime "Forecast time [%1$tH:%1$tM]" <clock>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#forecastTime"}
+String ForecastCondition "Forecast conditions [%s]"  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#conditions"}
+Image ForecastIcon "Forecast icon"  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#icon"}
+String ForecastIconKey "Forecast icon key [%s]"  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#iconKey"}
+Number ForecastTempMin "Forecast min temp [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#minTemperature"}
+Number ForecastTempMax "Forecast max temp [%.1f °C]" <temperature>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#maxTemperature"}
+Number ForecastHumidity "Forecast Humidity [%d %%]" <humidity>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#relativeHumidity"}
+Number ForecastProbaPrecip "Proba precip [%d %%]" <rain>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#probaPrecipitation"}
+Number ForecastRain "Rain [%.1f mm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#precipitationDay"}
+Number ForecastSnow "Snow [%.2f cm]" <rain> (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#snow"}
+String ForecastMaxWindDirection "Max wind direction [%s]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#maxWindDirection"}
+Number ForecastMaxWindDirection2 "Max wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#maxWindDirectionDegrees"}
+Number ForecastMaxWindSpeed "Max wind speed [%.1f km/h]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#maxWindSpeed"}
+String ForecastAvgWindDirection "Avg wind direction [%s]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#averageWindDirection"}
+Number ForecastAvgWindDirection2 "Avg wind direction [%.0f °]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#averageWindDirectionDegrees"}
+Number ForecastAvgWindSpeed "Avg wind speed [%.1f km/h]" <wind>  (gWeatherStation) {channel="weatherunderground:weather:api:poppenweiler:forecastToday#averageWindSpeed"}
