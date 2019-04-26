@@ -187,7 +187,7 @@ then
 	if (BatteryBad) {
 		postUpdate(BatteryStatusBad, 1)		
 	} else {
-		if (Integer.valueOf(BatteryStatusBad.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusBad.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in Bathroom failed to update!", "All sensors in bathroom did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusBad, 0)		
@@ -203,7 +203,7 @@ then
 	if (BatterySleepingRoom) {
 		postUpdate(BatteryStatusSleepingRoom, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusSleepingRoom.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusSleepingRoom.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in SleepingRoom failed to update!", "All sensors in SleepingRoom did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusSleepingRoom, 0)		
@@ -220,7 +220,7 @@ then
 	if (BatteryLivingRoom) {
 		postUpdate(BatteryStatusLivingRoom, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusLivingRoom.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusLivingRoom.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in LivingRoom failed to update!", "All sensors in LivingRoom did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusLivingRoom, 0)		
@@ -237,7 +237,7 @@ then
 	if (BatteryBasement) {
 		postUpdate(BatteryStatusBasement, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusBasement.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusBasement.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in Basement failed to update!", "All sensors in Basement did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusBasement, 0)		
@@ -254,7 +254,7 @@ then
 	if (BatteryStudio) {
 		postUpdate(BatteryStatusStudio, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusStudio.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusStudio.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in Studio failed to update!", "All sensors in Studio did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusStudio, 0)		
@@ -271,7 +271,7 @@ then
 	if (BatteryWaschkeller) {
 		postUpdate(BatteryStatusWaschkeller, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusWaschkeller.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusWaschkeller.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in Waschkeller failed to update!", "All sensors in Waschkeller did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusWaschkeller, 0)		
@@ -288,7 +288,7 @@ then
 	if (BatteryZimmerSebastian) {
 		postUpdate(BatteryStatusZimmerSebastian, 1)
 	} else {
-		if (Integer.valueOf(BatteryStatusZimmerSebastian.previousState.state.toString).equals(1)) {
+		if (Double.parseDouble(BatteryStatusZimmerSebastian.previousState.state.toString).equals(1.0)) {
 			sendMail(RECIPIENT, "Sensor in ZimmerSebastian failed to update!", "All sensors in ZimmerSebastian did not update.\n\nReplace Battery soon!")			
 		}
 		postUpdate(BatteryStatusZimmerSebastian, 0)		
